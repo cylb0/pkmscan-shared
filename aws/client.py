@@ -2,8 +2,6 @@ import os
 import boto3
 from enum import Enum
 from typing import Dict, Optional
-from .schemas import ImageTask
-
 
 class ResourceType(str, Enum):
     BUCKETS = "buckets"
@@ -86,6 +84,3 @@ class AWSClientManager:
 
     def trigger_image_processing(self, task: ImageTask):
         return self._send_to_sqs(QueueAlias.RAW_IMAGES, task.model_dump_json())
-
-
-aws_client = AWSClientManager()
