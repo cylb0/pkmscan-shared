@@ -1,4 +1,4 @@
-from .clients import AWSClientManager, BucketAlias, QueueAlias
+from .client import AWSClientManager, BucketAlias, QueueAlias
 
 aws_client = AWSClientManager()
 
