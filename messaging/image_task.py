@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from domain.card import CardIdentity
+from ..domain import CardIdentity
 
 class ImageTask(BaseModel):
     card: CardIdentity
