@@ -2,6 +2,7 @@ import os
 import boto3
 from enum import Enum
 from typing import Dict, Optional
+from messaging import ImageTask
 
 class ResourceType(str, Enum):
     BUCKETS = "buckets"
