@@ -1,4 +1,4 @@
-from domain.card import CardIdentity
+from ..domain import CardIdentity
 
 def get_s3_img_key(
     card: CardIdentity,
