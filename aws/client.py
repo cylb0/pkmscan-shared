@@ -2,7 +2,7 @@ import os
 import boto3
 from enum import Enum
 from typing import Dict, Optional
-from ..messaging import ImageTask
+from ..messaging import ImageTask, DBUpdateMessage
 
 class ResourceType(str, Enum):
     BUCKETS = "buckets"
@@ -15,6 +15,7 @@ class BucketAlias(str, Enum):
 
 class QueueAlias(str, Enum):
     RAW_IMAGES = "raw_images"
+    DB_UPDATES = "db_updates"
 
 
 class AWSClientManager:
@@ -36,7 +37,8 @@ class AWSClientManager:
                 BucketAlias.MEDIAS.value: os.getenv("AWS_STORAGE_BUCKET")
             },
             ResourceType.QUEUES: {
-                QueueAlias.RAW_IMAGES.value: os.getenv("AWS_RAW_IMG_QUEUE_URL")
+                QueueAlias.RAW_IMAGES.value: os.getenv("AWS_RAW_IMG_QUEUE_URL"),
+                QueueAlias.DB_UPDATES.value: os.getenv("AWS_DB_UPDATE_QUEUE_URL")
             },
         }
 
@@ -91,3 +93,6 @@ class AWSClientManager:
 
     def trigger_image_processing(self, task: ImageTask):
         return self._send_to_sqs(QueueAlias.RAW_IMAGES, task.model_dump_json())
+
+    def trigger_database_update(self, message: DBUpdateMessage):
+        return self._send_to_sqs(QueueAlias.DB_UPDATES, message.model_dump_json())
