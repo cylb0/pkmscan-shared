@@ -1,1 +1,1 @@
-from .image_task import ImageTask, DBUpdateType, CardImageProcessedPayload, DBUpdateMessage
+from .image_task import ImageTask, DBUpdateType, CardImageProcessedPayload, DBUpdateMessage, ImageProcessingStatus
