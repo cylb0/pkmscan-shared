@@ -65,7 +65,7 @@ class AWSClientManager:
             self, s3_key, bucket_alias: BucketAlias = BucketAlias.MEDIAS
     ):
         target_bucket = self._get_resource(ResourceType.BUCKETS, bucket_alias)
-        return self.s3.delete_object(Bucket=target_bucket, Key=self.s3)
+        return self.s3.delete_object(Bucket=target_bucket, Key=s3_key)
     
     def _send_to_sqs(self, queue_alias: QueueAlias, body: str):
         url = self._get_resource(ResourceType.QUEUES, queue_alias)
