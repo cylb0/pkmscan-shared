@@ -1,5 +1,5 @@
 import logging
-from ..aws import QueueAlias, aws_client, AWSClientManager
+from aws.client import QueueAlias, AWSClientManager
 from typing import Callable, List, Optional
 import time
 
