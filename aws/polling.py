@@ -1,5 +1,5 @@
 import logging
-from aws.client import QueueAlias, AWSClientManager
+from .client import QueueAlias, AWSClientManager
 from typing import Callable, List, Optional
 import time
 
@@ -14,7 +14,7 @@ def start_sqs_worker(
     client: Optional[AWSClientManager] = None
 ):
     if client is None:
-        from ..aws import aws_client
+        from . import aws_client
         client = aws_client
 
     logger.info(f"Starting SQS worker for queue: {queue_alias.value}")
