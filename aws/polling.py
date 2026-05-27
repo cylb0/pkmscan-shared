@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 def start_sqs_worker(
     queue_alias: QueueAlias,
-    message_handler: Callable[[List[dict]], None],
+    message_handler: Callable[[dict], None],
     max_messages: int = 5,
     wait_time_seconds: int = 20,
     max_empty_poll: Optional[int] = None,
@@ -57,7 +57,7 @@ def start_sqs_worker(
             for msg in messages:
                 try:
                     message_handler(msg)
-                    client.delete_message(msg["ReceiptHandle"], queue_alias=queue_alias)
+                    client.delete_message(msg["ReceiptHandle"], queue_alias)
                 except Exception as msg_err:
                     logger.error(f"Failed to process message {msg.get('MessageId')}: {msg_err}")
 
