@@ -54,6 +54,13 @@ def start_sqs_worker(
             empty_polls = 0
             logger.info(f"Received {len(messages)} from queue {queue_alias.value}")
 
+            for msg in messages:
+                try:
+                    message_handler(msg)
+                    client.delete_message(msg["ReceiptHandle"], queue_alias=queue_alias)
+                except Exception as msg_err:
+                    logger.error(f"Failed to process message {msg.get('MessageId')}: {msg_err}")
+
             message_handler(messages)
 
         except Exception as err:
