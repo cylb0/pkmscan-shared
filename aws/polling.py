@@ -61,8 +61,6 @@ def start_sqs_worker(
                 except Exception as msg_err:
                     logger.error(f"Failed to process message {msg.get('MessageId')}: {msg_err}")
 
-            message_handler(messages)
-
         except Exception as err:
             logger.error(f"Error during SQS polling or handling on {queue_alias.value}: {err}")
             logger.info("Retrying in 5 seconds")
