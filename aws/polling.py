@@ -13,6 +13,19 @@ def start_sqs_worker(
     max_empty_poll: Optional[int] = None,
     client: Optional[AWSClientManager] = None
 ):
+    """Starts a generic SQS polling loop.
+
+    Can run indefinitely (listener mode) or stop after consecutive empty polls (ephemeral mode).
+    Handles network errors and retries automatically.
+
+    Args:
+        queue_alias: SQS target queue enum.
+        message_handler: Callback function invoked with received raw SQS messages.
+        max_messages: Max messages to fetch per call (AWS max is 10). Defaults to 5.
+        wait_time_seconds: Long polling duration. Defaults to 20.
+        max_empty_poll: Max empty requests before stopping. If None, runs forever.
+        client: AWS client manager instance. Lazily imports global instance if None.
+    """
     if client is None:
         from . import aws_client
         client = aws_client
@@ -30,7 +43,8 @@ def start_sqs_worker(
 
             if not messages:
                 empty_polls += 1
-                logger.info(f"No messages on {queue_alias.value} (empty poll {empty_polls}/{max_empty_poll})")
+                total_poll = max_empty_poll if max_empty_poll else "∞"
+                logger.info(f"No messages on {queue_alias.value} (empty poll {empty_polls}/{total_poll})")
 
                 if max_empty_poll and empty_polls >= max_empty_poll:
                     logger.info(f"No messages for a while, stopping worker")
