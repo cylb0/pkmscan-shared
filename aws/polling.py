@@ -59,7 +59,7 @@ def start_sqs_worker(
                     message_handler(msg)
                     client.delete_message(msg["ReceiptHandle"], queue_alias)
                 except Exception as msg_err:
-                    logger.error(f"Failed to process message {msg.get('MessageId')}: {msg_err}")
+                    logger.error(f"Failed to process message {msg.get('MessageId')}: {msg_err}", exc_info=True)
 
         except Exception as err:
             logger.error(f"Error during SQS polling or handling on {queue_alias.value}: {err}")
